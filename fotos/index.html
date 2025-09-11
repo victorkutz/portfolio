@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Victor Kutz - Fotos</title>
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 15px;
+      color: rgb(255, 255, 255);
+      background-color: rgb(0, 0, 0);
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(23, 23, 23, 0.7);
+      z-index: -1;
+    }
+
+    /* Header styles */
+    header {
+      margin-bottom: 20px;
+      padding: 15px;
+      backdrop-filter: blur(3px);
+      background-color: rgb(0, 0, 0);
+      -webkit-backdrop-filter: blur(6px);
+      position: relative;
+    }
+
+    .header-top {
+      font-size: 20px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .header-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .header-links a {
+      font-size: 16px;
+      color: blue;
+      text-decoration: none;
+      padding: 5px 10px;
+    }
+
+    .header-links a:hover {
+      opacity: 0.7;
+    }
+
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+      color: blue;
+      text-decoration: underline;
+    }
+
+    /* Container and layout */
+    #container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+
+    /* Gallery styles */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .modal-content {
+      display: flex;
+      flex-direction: column;
+      background: rgba(20, 20, 20, 0.95);
+      padding: 15px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+      max-width: 95%;
+      max-height: 85%;
+      animation: zoomIn 0.5s ease;
+      position: relative;
+      border-radius: 5px;
+    }
+
+    .modal-content img {
+      max-width: 100%;
+      max-height: 60vh;
+      object-fit: contain;
+      border-radius: 0;
+    }
+
+    .modal-info {
+      margin-top: 15px;
+      color: #e0e0e0;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+      background: none;
+      border: none;
+      z-index: 25;
+    }
+
+    .modal-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 30px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      cursor: pointer;
+      padding: 8px 12px;
+      user-select: none;
+      transition: background 0.3s ease;
+      z-index: 20;
+      border-radius: 50%;
+    }
+
+    .modal-arrow:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-arrow.left {
+      left: 5px;
+    }
+
+    .modal-arrow.right {
+      right: 5px;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes zoomOut {
+      from {
+        transform: scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+    }
+
+    /* Mobile menu for small screens */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    /* Loading animation for images */
+    .gallery img {
+      background: #222;
+      min-height: 150px;
+    }
+
+    /* Media queries for responsiveness */
+    @media (min-width: 768px) {
+      header {
+        padding: 20px;
+      }
+      
+      .header-top {
+        font-size: 24px;
+        text-align: left;
+      }
+      
+      .header-links {
+        justify-content: flex-start;
+      }
+      
+      .gallery {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on tablets and desktops */
+        gap: 10px;
+      }
+      
+      .modal-content {
+        flex-direction: row;
+        max-width: 90%;
+        max-height: 90%;
+        padding: 20px;
+      }
+      
+      .modal-content img {
+        max-width: 60vw;
+        max-height: 80vh;
+      }
+      
+      .modal-info {
+        margin-left: 20px;
+        margin-top: 0;
+        text-align: left;
+        max-width: 30vw;
+      }
+      
+      .modal-arrow {
+        font-size: 40px;
+        padding: 10px;
+      }
+      
+      .modal-arrow.left {
+        left: 10px;
+      }
+      
+      .modal-arrow.right {
+        right: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-links {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .modal-arrow {
+        font-size: 24px;
+        padding: 6px 10px;
+      }
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      border: none;
+      outline: none;
+      background-color: rgba(0, 0, 255, 0.7);
+      color: white;
+      cursor: pointer;
+      padding: 10px 15px;
+      border-radius: 50%;
+      font-size: 18px;
+    }
+
+    .back-to-top:hover {
+      background-color: rgba(0, 0, 255, 0.9);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+    <div class="header-top">
+      Victor Kutz, jornalista e fotógrafo - Fotos
+    </div>
+    <div class="header-links" id="header-links">
+      <a href="/portfolio/index.html">Home</a>
+      <a href="/portfolio/fotos/index.html">Fotos</a>
+      <a href="/portfolio/textos/index.html">Textos</a>
+      <a href="/portfolio/contato/index.html">Contato</a>
+    </div>
+  </header>
+
+  <div id="container">
+    <div class="gallery">
+      <img src="/portfolio/imagens/estúdio/v[29] Kodak V3 500T - S3T.jpg" alt="Foto 2" loading="lazy">
+      <img src="/portfolio/imagens/estúdio/v[28] Kodak V3 500T - S3T.jpg" alt="Foto 1" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v[31] Kodak V3 500T - S3T.jpg" alt="Foto 3" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[13] Fomapan 400.jpg" alt="Foto 4" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[39] Fomapan 400.jpg" alt="Foto 5" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[1] Fomapan 400.jpg" alt="Foto 6" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -59.jpg" alt="Foto 7" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -60.jpg" alt="Foto 8" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -71.jpg" alt="Foto 9" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[0] Ilford HP5 400.jpg" alt="Foto 10" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[34] Ilford HP5 400.jpg" alt="Foto 11" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[35] Ilford HP5 400.jpg" alt="Foto 12" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[10] Ilford HP5 400.jpg" alt="Foto 13" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[11] Ilford HP5 400.jpg" alt="Foto 14" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[7] Kodak V3 500T - S3T.jpg" alt="Foto 15" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[39] Fomapan 400.jpg" alt="Foto 16" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[25] Fujifilm 200.jpg" alt="Foto 17" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/[26] Fujifilm 200.jpg" alt="Foto 18" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/v[58] Fomapan 400_left.jpg" alt="Foto 19" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/vbs[23] Ilford HP5 400.jpg" alt="Foto 20" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/vbs[16] Ilford HP5 400.jpg" alt="Foto 21" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -62.jpg" alt="Foto 25" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -63.jpg" alt="Foto 26" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/5430 - 2769 - XX 200 BASICA - Carolina Azevedo  -65.jpg" alt="Foto 27" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/editadaub.jpg" alt="Foto 23" loading="lazy">
+      <img src="/portfolio/imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -65.jpg" alt="Foto 24" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/[69] Kodacolor 200.jpg" alt="Foto 28" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/[23] Ilford HP5 400.jpg" alt="Foto 22" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/[17] Ilford HP5 400.jpg" alt="Foto 32" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/[29] Fomapan 400.jpg" alt="Foto 33" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -02.jpg" alt="Foto 29" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/v[23] Fomapan 400.jpg" alt="Foto 30" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/v[26] Fomapan 400.jpg" alt="Foto 31" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/v[25] Fomapan 400.jpg" alt="Foto 34" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/v[31] Fomapan 400.jpg" alt="Foto 35" loading="lazy">
+      <img src="/portfolio/imagens/tango.musica/v[36] Fomapan 400.jpg" alt="Foto 36" loading="lazy">
+      <img src="/portfolio/imagens/teatro/Scan-06.jpg" alt="Foto 28" loading="lazy">
+      <img src="/portfolio/imagens/teatro/Scan-07.jpg" alt="Foto 29" loading="lazy">
+      <img src="/portfolio/imagens/teatro/Scan-09.jpg" alt="Foto 30" loading="lazy">
+      <img src="/portfolio/imagens/teatro/v[59] Fomapan 400_right.jpg" alt="Foto 31" loading="lazy">
+      <img src="/portfolio/imagens/teatro/vScan-11.jpg" alt="Foto 32" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v5430 - 2769 - XX 200 BASICA - Carolina Azevedo  -73.jpg" alt="Foto 33" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v5430 - 2769 - XX 200 BASICA - Carolina Azevedo  -64.jpg" alt="Foto 34" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -64.jpg" alt="Foto 35" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -74.jpg" alt="Foto 36" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[16] Ilford HP5 400.jpg" alt="Foto 28" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[32] Ilford HP5 400.jpg" alt="Foto 29" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[11] Fomapan 400.jpg" alt="Foto 30" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v[43] Fomapan 400.jpg" alt="Foto 34" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[27] Fujifilm 200.jpg" alt="Foto 35" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[36] Ilford HP5 400.jpg" alt="Foto 36" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v[14] Kodak V3 500T - S3T.jpg" alt="Foto 31" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v[66] Fomapan 400_right.jpg" alt="Foto 32" loading="lazy">
+      <img src="/portfolio/imagens/retratos/vedu virado.jpg" alt="Foto 33" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v[28] Fujifilm 400.jpg" alt="Foto 34" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v[21] Ilford HP5 400.jpg" alt="Foto 35" loading="lazy">
+      <img src="/portfolio/imagens/retratos/v[14] Ilford HP5 400.jpg" alt="Foto 36" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[0] Fujifilm 400.jpg" alt="Foto 34" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[13] Fujifilm 400.jpg" alt="Foto 35" loading="lazy">
+      <img src="/portfolio/imagens/retratos/[24] Fujifilm 400.jpg" alt="Foto 36" loading="lazy">
+    </div>
+  </div>
+
+  <!-- Back to top button -->
+  <button class="back-to-top" id="backToTop">↑</button>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal">
+    <button class="modal-close" id="modal-close">&times;</button>
+    <button class="modal-arrow left" id="modal-prev">&#10094;</button>
+    <button class="modal-arrow right" id="modal-next">&#10095;</button>
+
+    <div class="modal-content">
+      <img id="modal-img" src="" alt="">
+      <div class="modal-info">
+        <p><strong>Local:</strong> <span id="modal-location"></span></p>
+        <p><strong>Câmera:</strong> <span id="modal-camera"></span></p>
+        <p><strong>Filme:</strong> <span id="modal-film"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu functionality
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const headerLinks = document.getElementById('header-links');
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    // Only show mobile menu button on small screens
+    function checkScreenSize() {
+      if (window.innerWidth < 768) {
+        mobileMenuBtn.style.display = 'block';
+        headerLinks.style.display = 'none';
+      } else {
+        mobileMenuBtn.style.display = 'none';
+        headerLinks.style.display = 'flex';
+      }
+      
+      // Show back to top button when scrolling
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopBtn.style.display = "block";
+      } else {
+        backToTopBtn.style.display = "none";
+      }
+    }
+    
+    // Initial check
+    checkScreenSize();
+    
+    // Listen for resize events
+    window.addEventListener('resize', checkScreenSize);
+    
+    // Listen for scroll events
+    window.addEventListener('scroll', checkScreenSize);
+    
+    // Toggle menu visibility
+    mobileMenuBtn.addEventListener('click', function() {
+      if (headerLinks.style.display === 'flex') {
+        headerLinks.style.display = 'none';
+      } else {
+        headerLinks.style.display = 'flex';
+        headerLinks.style.flexDirection = 'column';
+      }
+    });
+    
+    // Back to top functionality
+    backToTopBtn.addEventListener('click', function() {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+
+    // Modal functionality
+    const galleryImages = document.querySelectorAll('.gallery img');
+    const modal = document.getElementById('myModal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCamera = document.getElementById('modal-camera');
+    const modalFilm = document.getElementById('modal-film');
+    const modalLocation = document.getElementById('modal-location');
+    const modalClose = document.getElementById('modal-close');
+    const modalPrev = document.getElementById('modal-prev');
+    const modalNext = document.getElementById('modal-next');
+
+    // Complete photo information array
+    const photos = [
+      {
+        "src": "/portfolio/imagens/estúdio/v[29] Kodak V3 500T - S3T.jpg",
+        "camera": "Nikon F3",
+        "film": "Kodak V3 500T",
+        "location": "Estúdio"
+      },
+      {
+        "src": "/portfolio/imagens/estúdio/v[28] Kodak V3 500T - S3T.jpg",
+        "camera": "Nikon F3",
+        "film": "Kodak V3 500T",
+        "location": "Estúdio"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v[31] Kodak V3 500T - S3T.jpg",
+        "camera": "Nikon F3",
+        "film": "Kodak V3 500T",
+        "location": "A jornalista Carolina Azevedo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[13] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Universidade de Buenos Aires em greve"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[39] Fomapan 400.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Pinheiros, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[1] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -59.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Vista do Copan, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -60.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Copan, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -71.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Metrô de São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[0] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Estrada de Cunha, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[34] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Vista do cais, em Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[35] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Costa de Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[10] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Gato morto em Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[11] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Sombras em Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[7] Kodak V3 500T - S3T.jpg",
+        "camera": "Nikon F3",
+        "film": "Kodak V3 500T",
+        "location": "Jasmineiro, em Piracicaba, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[39] Fomapan 400.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Pinheiros, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[25] Fujifilm 200.jpg",
+        "camera": "Nikon F3",
+        "film": "Fujifilm 200",
+        "location": "Vista da serra de Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/[26] Fujifilm 200.jpg",
+        "camera": "Nikon F3",
+        "film": "Fujifilm 200",
+        "location": "Vista da serra de Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/v[58] Fomapan 400_left.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Sesc 24 de Maio"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/vbs[23] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Gato em sacada de Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/vbs[16] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Fachada do Bar Sur, em Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -62.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fujifilm 200",
+        "location": "Carnaval na Praça do Patriarca, em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -63.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fujifilm 200",
+        "location": "Carnaval na Praça do Patriarca, em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/5430 - 2769 - XX 200 BASICA - Carolina Azevedo  -65.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "XX 200",
+        "location": "Fila de faxineiras, em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/editadaub.jpg",
+        "camera": "Kodak m35",
+        "film": "Ilford HP5",
+        "location": "Homens mergulham no mar, Ubatuba, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -65.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fujifilm 200",
+        "location": "Garis no carnaval na Praça do Patriarca"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/[69] Kodacolor 200.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Kodacolor 200",
+        "location": "Apresentação musical em bar de São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/[23] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Indígenas se apresentan em Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/[17] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Apresentação de tango em praça em San Telmo, Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/[29] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "La Catedral, clube de tango em Almagro, Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -02.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Arrigo Barnabé em show em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/v[23] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Boliche del Roberto, tango em Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/v[26] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Boliche del Roberto, tango em Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/v[25] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Boliche del Roberto, tango em Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/v[31] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "La Catedral, clube de tango em Almagro, Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/tango.musica/v[36] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "La Catedral, clube de tango em Almagro, Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/teatro/Scan-06.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Teatro de Contêiner, em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/teatro/Scan-07.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Ensaio no Teatro de Contêiner, em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/teatro/Scan-09.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Ensaio no Teatro de Contêiner, em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/teatro/v[59] Fomapan 400_right.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Peça 'Das paredes', no Teatro Oficina"
+      },
+      {
+        "src": "/portfolio/imagens/teatro/vScan-11.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Ensaio no Teatro de Contêiner, em São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v5430 - 2769 - XX 200 BASICA - Carolina Azevedo  -73.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "XX 400",
+        "location": "Retrato da Jornalista Carolina Azevedo"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v5430 - 2769 - XX 200 BASICA - Carolina Azevedo  -64.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "XX 400",
+        "location": "Autorretrato"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -64.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Retrato com dupla exposição, Carolina Azevedo e Vinicius Crepaldi"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v5430 - 2770 - Foma 400 BASICA - Carolina Azevedo  -74.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "Santa Cecilia, São Paulo"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[16] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "O escritor, tradutor e crítico Felipe Franco Munhoz"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[32] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Barqueiro em Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[11] Fomapan 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": "Retrato em dupla exposição, Buenos Aires"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v[43] Fomapan 400.jpg",
+        "camera": "Olympus Pen EEs-3",
+        "film": "Fomapan 400",
+        "location": "A jornalista Carolina Azevedo"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[27] Fujifilm 200.jpg",
+        "camera": "Nikon F3",
+        "film": "Fujifilm 200",
+        "location": "Retrato em dupla exposição"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[36] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "Paraty"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v[14] Kodak V3 500T - S3T.jpg",
+        "camera": "Nikon F3",
+        "film": "Kodak V3 500T",
+        "location": ""
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v[66] Fomapan 400_right.jpg",
+        "camera": "Nikon F3",
+        "film": "Fomapan 400",
+        "location": ""
+      },
+      {
+        "src": "/portfolio/imagens/retratos/vedu virado.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": ""
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v[28] Fujifilm 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fujifilm 400",
+        "location": "O editor Charles Cosac em seu apartamento"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v[21] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "O escritor Fabricio Corsaletti"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/v[14] Ilford HP5 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Ilford HP5",
+        "location": "O escritor, tradutor e crítico Felipe Franco Munhoz"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[0] Fujifilm 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fujifilm 400",
+        "location": "O editor Charles Cosac em seu apartamento"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[13] Fujifilm 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fujifilm 400",
+        "location": "O editor Charles Cosac em seu apartamento"
+      },
+      {
+        "src": "/portfolio/imagens/retratos/[24] Fujifilm 400.jpg",
+        "camera": "Nikon F3",
+        "film": "Fujifilm 400",
+        "location": "O editor Charles Cosac em seu apartamento"
+      }
+    ];
+
+    let currentIndex = 0;
+
+    function openModal(index) {
+      currentIndex = index;
+      const photo = photos[index];
+      modalImg.src = photo.src;
+      modalCamera.textContent = photo.camera;
+      modalFilm.textContent = photo.film;
+      modalLocation.textContent = photo.location;
+      modal.style.display = "flex";
+      
+      // Adjust modal layout based on screen size
+      if (window.innerWidth < 768) {
+        modal.querySelector('.modal-content').style.flexDirection = 'column';
+      } else {
+        modal.querySelector('.modal-content').style.flexDirection = 'row';
+      }
+    }
+
+    function closeModal() {
+      modal.querySelector('.modal-content').style.animation = 'zoomOut 0.3s ease';
+      setTimeout(() => {
+        modal.style.display = "none";
+        modal.querySelector('.modal-content').style.animation = '';
+      }, 300);
+    }
+
+    galleryImages.forEach((img, index) => {
+      img.addEventListener('click', () => openModal(index));
+      // Add loading error handling
+      img.addEventListener('error', function() {
+        this.style.display = 'none';
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === "Escape") closeModal();
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "ArrowRight") nextImage();
+    });
+
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+      openModal(currentIndex);
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % photos.length;
+      openModal(currentIndex);
+    }
+
+    modalPrev.addEventListener('click', function (e) {
+      e.stopPropagation();
+      prevImage();
+    });
+
+    modalNext.addEventListener('click', function (e) {
+      e.stopPropagation();
+      nextImage();
+    });
+
+    // Swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    modal.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+    
+    modal.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+    
+    function handleSwipe() {
+      const swipeThreshold = 50; // Minimum swipe distance
+      
+      if (touchEndX < touchStartX - swipeThreshold) {
+        // Swipe left - next image
+        nextImage();
+      }
+      
+      if (touchEndX > touchStartX + swipeThreshold) {
+        // Swipe right - previous image
+        prevImage();
+      }
+    }
+  </script>
+</body>
+
+</html>
