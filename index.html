@@ -10,7 +10,7 @@
     * {
       box-sizing: border-box;
     }
-    
+
     body {
       margin: 0;
       padding: 0;
@@ -95,7 +95,8 @@
       -webkit-backdrop-filter: blur(6px);
     }
 
-    #left, #right {
+    #left,
+    #right {
       width: 100%;
       float: none;
     }
@@ -278,6 +279,7 @@
         transform: scale(0.8);
         opacity: 0;
       }
+
       to {
         transform: scale(1);
         opacity: 1;
@@ -289,6 +291,7 @@
         transform: scale(1);
         opacity: 1;
       }
+
       to {
         transform: scale(0.8);
         opacity: 0;
@@ -313,39 +316,39 @@
       #container {
         padding: 20px;
       }
-      
+
       header {
         padding: 20px;
       }
-      
+
       .header-top {
         font-size: 24px;
         text-align: left;
       }
-      
+
       .header-links {
         justify-content: flex-start;
       }
-      
+
       .gallery {
         grid-template-columns: repeat(3, 1fr);
       }
-      
+
       .articles-section {
         grid-template-columns: repeat(3, 1fr);
       }
-      
+
       .modal-content {
         flex-direction: row;
         max-width: 90%;
         max-height: 90%;
       }
-      
+
       .modal-content img {
         max-width: 60vw;
         max-height: 80vh;
       }
-      
+
       .modal-info {
         margin-left: 20px;
         margin-top: 0;
@@ -372,12 +375,12 @@
       .gallery {
         grid-template-columns: 1fr;
       }
-      
+
       .header-links {
         flex-direction: column;
         align-items: center;
       }
-      
+
       .modal-arrow {
         font-size: 24px;
         padding: 6px 10px;
@@ -405,48 +408,63 @@
   <div id="container">
     <div id="left">
       <p class="animated-text">
-<p>Victor Kutz, 24 anos, é jornalista e fotógrafo, graduado em Jornalismo pela Faculdade Cásper Líbero. Desde 2023, integra a redação da Revista Cult, onde atua como editor do site e de redes sociais. Sua produção se concentra em temas ligados ao cinema, literatura, música, artes visuais e políticas públicas para a cultura.</p>
-<p>Na revista, também é curador da "Oficina Literária", seção mensal da revista impressa dedicada à publicação de textos inéditos de novos autores e assinou, ao longo de 2025, a coluna "Estante", com resenha mensais de lançamentos do circuito literário.</p>
-<p>Na graduação (concluída em 2025), desenvolveu uma pesquisa acadêmica sobre o compositor argentino Astor Piazzolla, sob a ótica da etnomusicologia, relacionando a obra do bandoneonista ao debate político, literário e cultural do país através da obra crítica do escritor Jorge Luis Borges.</p>
-<p>Como fotógrafo, se dedica à construção de um portfólio que transita entre o documental e o experimental baseado processos analógicos. Já fotografou eventos, ensaios em estúdio e retratos para reportagens e perfis.</p>
-<p>Contribui regularmente com festivais e revistas independentes de cinema e tem experiência em assessoria de imprensa, produção de eventos e branded content.</p>
-<p>Inglês fluente; espanhol e francês avançados.</p>
-<p>Atualmente está aberto a contribuições, freelas e novas experiências na área de cultura e jornalismo.</p>
+      <p><b>Victor Kutz</b>, 24 anos, é jornalista e fotógrafo, graduado em Jornalismo pela Faculdade Cásper Líbero. Desde
+        2023, integra a redação da Revista Cult, onde atua como editor do site e de redes sociais. Sua produção se
+        concentra em temas ligados ao cinema, literatura, música, artes visuais e políticas públicas para a cultura.</p>
+      <p>Na revista, também é curador da "Oficina Literária", seção mensal da revista impressa dedicada à publicação de
+        textos inéditos de novos autores e assinou, ao longo de 2025, a coluna "Estante", com resenha mensais de
+        lançamentos do circuito literário.</p>
+      <p>Na graduação (concluída em 2025), desenvolveu uma pesquisa acadêmica sobre o compositor argentino Astor
+        Piazzolla, sob a ótica da etnomusicologia, relacionando a obra do bandoneonista ao debate político, literário e
+        cultural do país através da obra crítica do escritor Jorge Luis Borges.</p>
+      <p>Como fotógrafo, se dedica à construção de um portfólio que transita entre o documental e o experimental baseado
+        processos analógicos. Já fotografou eventos, ensaios em estúdio e retratos para reportagens e perfis.</p>
+      <p>Contribui regularmente com festivais e revistas independentes de cinema e tem experiência em assessoria de
+        imprensa, produção de eventos e branded content.</p>
+      <p>Inglês fluente; espanhol e francês avançados.</p>
+      <p>Atualmente está aberto a contribuições, freelas e novas experiências na área de cultura e jornalismo.</p>
       </p>
     </div>
 
     <div id="right">
-      <img src="virada.jpg" style="width: 100%; border: 2px solid #f0f0f0;" alt="Foto de Victor">
+      <img loading="lazy" src="virada.jpg" style="width: 100%; border: 2px solid #f0f0f0;" alt="Foto de Victor">
     </div>
 
-    <div style="clear: both;"></div>
-    <div class="gallery-title" style="text-align: left;" id="fotos">
-      Galeria de Fotos
-    </div>
 
-    <div class="gallery">
-      <img src="imagens/retratos/[15] Ilford HP5 400.jpg" alt="Foto 1">
-      <img src="imagens/retratos/[24] Fujifilm 400.jpg" alt="Foto 2">
-      <img src="imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -62.jpg" alt="Foto 3">
-      <img src="imagens/ruas.paisagens/editadaub.jpg" alt="Foto 4">
-      <img src="imagens/estúdio/miau juntas.jpg" alt="Foto 5">
-      <img src="imagens/tango.musica/[29] Fomapan 400.jpg" alt="Foto 6">
-    </div>
-    
-    <a href="fotos/index.html">
-      <div class="see-more">
-        ver mais -->
-      </div>
-    </a>
-    
     <div style="clear: both;"></div>
     <div class="gallery-title" style="text-align: left;" id="fotos">
       textos em destaque
     </div>
-    
+
     <div class="articles-section">
       <div class="article">
-        <a href="/portfolio/textos/materias/Onde_esta_o_acervo_de_Haroldo_de_Campos">
+        <a href="/portfolio/textos/materias/deus_e_o_diabo/index.html">
+
+          <h3>Deus e o Diabo no Grande sertão</h3>
+          <p>Guimarães Rosa renasce pela ótica de duas biografias</p>
+        </a>
+      </div>
+
+      <div class="article">
+        <a href="/portfolio/textos/materias/por_uma_sociedade_sem_manicomios/index.html">
+
+          <h3>"Por uma sociedade sem manicômios: Os 25 anos da Lei 10.216"</h3>
+          <p>O movimento antimanicomial e o desafio das comunidades terapêuticas</p>
+        </a>
+      </div>
+
+      <div class="article">
+        <a href="/portfolio/textos/materias/scholastique/index.html">
+
+          <h3>“Fui salva pela escrita e pela guarda da memória” </h3>
+          <p>Uma das autoras africanas de maior destaque fala sobre a memória do genocídio de Ruanda e sua literatura</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="articles-section">
+      <div class="article">
+        <a href="/portfolio/textos/materias/Onde_esta_o_acervo_de_Haroldo_de_Campos/index.html">
 
           <h3>Onde está o acervo de Haroldo de Campos?</h3>
           <p>reportagem assinada em conjunto com Carolina Azevedo</p>
@@ -464,42 +482,39 @@
       <div class="article">
         <a href="/portfolio/textos/materias/Atef_Abu_Saif/index.html">
 
-          <h3>"Vamos lutar porque nos recusamos a sumir"</h3>
-          <p>Entrevista com Atef Abu Saif, ex-ministro da cultura da Autoridade Nacional Palestina</p>
+          <h3>“Historicamente, a diplomacia servia aos interesses das elites. Cabe a nós, diplomatas, desconstruir essa noção”</h3>
+          <p>Diplomata Irene Vida Gala questiona lobby masculino em postos de poder</p>
         </a>
       </div>
     </div>
-        <div class="articles-section">
-      <div class="article">
-        <a href="/portfolio/textos/materias/Onde_esta_o_acervo_de_Haroldo_de_Campos">
 
-          <h3>Grandes sertões – dois pontos! – travessias</h3>
-          <p>reportagem assinada em conjunto com Carolina Azevedo</p>
-        </a>
-      </div>
 
-      <div class="article">
-        <a href="/portfolio/textos/materias/fazer_teatro_e_uma_alegria_dificil/index.html">
-
-          <h3>"Por uma sociedade sem manicômios: Os 25 anos da Lei 10.216"</h3>
-          <p>entrevista com Maria Fernanda Cândido</p>
-        </a>
-      </div>
-
-      <div class="article">
-        <a href="/portfolio/textos/materias/Atef_Abu_Saif/index.html">
-
-          <h3>"Para que, afinal, serve o shrink? "</h3>
-          <p>Entrevista com Atef Abu Saif, ex-ministro da cultura da Autoridade Nacional Palestina</p>
-        </a>
-      </div>
-    </div>
-    
     <a href="textos/index.html">
       <div class="see-more">
         mais textos -->
       </div>
     </a>
+
+        <div style="clear: both;"></div>
+    <div class="gallery-title" style="text-align: left;" id="fotos">
+      Galeria de Fotos
+    </div>
+
+    <div class="gallery">
+      <img loading="lazy" src="imagens/retratos/[15] Ilford HP5 400.jpg" alt="Foto 1">
+      <img loading="lazy" src="imagens/retratos/[24] Fujifilm 400.jpg" alt="Foto 2">
+      <img loading="lazy" src="novasfotos/IMG_0118.JPG" alt="Foto 3">
+      <img loading="lazy" src="imagens/ruas.paisagens/editadaub.jpg" alt="Foto 4">
+      <img loading="lazy" src="imagens/estúdio/miau juntas.jpg" alt="Foto 5">
+      <img loading="lazy" src="imagens/tango.musica/[29] Fomapan 400.jpg" alt="Foto 6">
+    </div>
+
+    <a href="fotos/index.html">
+      <div class="see-more">
+        ver mais -->
+      </div>
+    </a>
+
   </div>
 
   <!-- Modal -->
@@ -522,7 +537,7 @@
     // Mobile menu functionality
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const headerLinks = document.getElementById('header-links');
-    
+
     // Only show mobile menu button on small screens
     function checkScreenSize() {
       if (window.innerWidth < 768) {
@@ -533,15 +548,15 @@
         headerLinks.style.display = 'flex';
       }
     }
-    
+
     // Initial check
     checkScreenSize();
-    
+
     // Listen for resize events
     window.addEventListener('resize', checkScreenSize);
-    
+
     // Toggle menu visibility
-    mobileMenuBtn.addEventListener('click', function() {
+    mobileMenuBtn.addEventListener('click', function () {
       if (headerLinks.style.display === 'flex') {
         headerLinks.style.display = 'none';
       } else {
@@ -564,7 +579,7 @@
     const photos = [
       { src: 'imagens/retratos/[15] Ilford HP5 400.jpg', camera: 'Nikon F3', film: 'Ilford Hp5', location: 'Retrato do escritor Felipe Franco Munhoz' },
       { src: 'imagens/retratos/[24] Fujifilm 400.jpg', camera: 'Nikon F3', film: 'Fujifilm 400', location: 'Retrato do editor Charles Cosac, em seu apartamento' },
-      { src: 'imagens/ruas.paisagens/5430 - 2768 - Fuji 200 BASICA - Carolina Azevedo -62.jpg', camera: 'Olympus Pen', film: 'Fujifilm 200', location: 'Carnaval na praça do patriarca' },
+      { src: 'novasfotos/IMG_0118.JPG', camera: 'Nikonf3', film: 'Ilford Xp2', location: 'Barcelona' },
       { src: 'imagens/ruas.paisagens/editadaub.jpg', camera: 'Kodak m35', film: 'fomapan 400', location: 'Litoral' },
       { src: 'imagens/estúdio/miau juntas.jpg', camera: 'Nikon F3', film: 'Kodak Vision 3 500T', location: 'Ensaio em estúdio' },
       { src: 'imagens/tango.musica/[29] Fomapan 400.jpg', camera: 'Nikon F3', film: 'Fomapan 400', location: 'Dois dançarinos em clube de tango em Buenos Aires' }
@@ -580,7 +595,7 @@
       modalFilm.textContent = photo.film;
       modalLocation.textContent = photo.location;
       modal.style.display = "flex";
-      
+
       // Adjust modal layout based on screen size
       if (window.innerWidth < 768) {
         modal.querySelector('.modal-content').style.flexDirection = 'column';
@@ -726,7 +741,7 @@
       canvas.width = width;
       canvas.height = height;
       createGrid();
-      
+
       // Adjust modal layout if open
       if (modal.style.display === 'flex') {
         if (window.innerWidth < 768) {
