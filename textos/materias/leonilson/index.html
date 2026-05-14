@@ -102,10 +102,37 @@
       <a href="/portfolio/textos/index.html">Textos</a>
       <a href="/portfolio/contato/index.html">Contato</a>
     </div>
-  </header>
-  
-  
-  </header>
+
+</header>
+
+        <script>
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const headerLinks = document.getElementById('header-links');
+
+    function checkScreenSize() {
+      if (window.innerWidth < 768) {
+        mobileMenuBtn.style.display = 'block';
+        headerLinks.style.display = 'none';
+      } else {
+        mobileMenuBtn.style.display = 'none';
+        headerLinks.style.display = 'flex';
+      }
+    }
+
+    checkScreenSize();
+
+    window.addEventListener('resize', checkScreenSize);
+
+    mobileMenuBtn.addEventListener('click', function () {
+      if (headerLinks.style.display === 'flex') {
+        headerLinks.style.display = 'none';
+      } else {
+        headerLinks.style.display = 'flex';
+        headerLinks.style.flexDirection = 'column';
+      }
+    });
+</script>
   
   
 
