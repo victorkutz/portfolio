@@ -92,16 +92,46 @@
 
 <body>
   <header>
+    <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
     <div class="header-top">
       Victor Kutz, jornalista e fotógrafo - Portfólio
     </div>
-    <div class="header-links">
+    <div class="header-links" id="header-links">
       <a href="/portfolio/index.html">Home</a>
       <a href="/portfolio/fotos/index.html">Fotos</a>
       <a href="/portfolio/textos/index.html">Textos</a>
       <a href="/portfolio/contato/index.html">Contato</a>
     </div>
   </header>
+     <script>
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const headerLinks = document.getElementById('header-links');
+
+    function checkScreenSize() {
+      if (window.innerWidth < 768) {
+        mobileMenuBtn.style.display = 'block';
+        headerLinks.style.display = 'none';
+      } else {
+        mobileMenuBtn.style.display = 'none';
+        headerLinks.style.display = 'flex';
+      }
+    }
+
+    checkScreenSize();
+
+    window.addEventListener('resize', checkScreenSize);
+
+    mobileMenuBtn.addEventListener('click', function () {
+      if (headerLinks.style.display === 'flex') {
+        headerLinks.style.display = 'none';
+      } else {
+        headerLinks.style.display = 'flex';
+        headerLinks.style.flexDirection = 'column';
+      }
+    });
+</script>
+  
 
   <div id="container">
     <h1>“Fui salva pela escrita e pela guarda da memória”</h1>
