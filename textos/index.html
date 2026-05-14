@@ -5,120 +5,576 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Textos - Portfólio</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 15px;
-      color:black;
-      background-color: white;
-    }
 
-    #container {
-      width: 900px;
-      max-width: 95%;
-      margin: 0 auto;
-      padding: 20px;
-    }
+<style>
 
-    header {
-      margin-bottom: 20px;
-      padding: 20px;
-      background-color: #fff;
-      border-bottom: 1px solid #eee;
-    }
+  /* ==========================================================================
+   RESET E BASE
+   ========================================================================== */
 
-    .header-top {
-      font-size: 24px;
-    }
+/* Reset universal de box model */
+* {
+  box-sizing: border-box;
+}
 
-    .header-links a {
-      margin-right: 15px;
-      font-size: 17px;
-      color: blue;
-      text-decoration: none;
-    }
+/*
+  corpo — prioridade: styles.css
+  (color #111111, background preto, position relative mantidos;
+   "color: black" e "background: white" do styles2 descartados)
+*/
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #111111;
+  background-color: rgb(0, 0, 0);
+  position: relative;
+}
 
-    .header-links a:hover {
-      opacity: 0.7;
-    }
+/* Negrito com cor de destaque */
+b {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #c55727;
+  position: relative;
+}
 
-    a:link,
-    a:visited,
-    a:hover,
-    a:active {
-      color: blue;
-      text-decoration: underline;
-    }
+/*
+  Links — prioridade: styles.css
+  ("text-decoration: underline" do styles2 descartado)
+*/
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: blue;
+  text-decoration: none;
+}
 
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-      margin-top: 20px;
-    }
 
-    .post {
-      display: flex;
-      gap: 15px;
-      align-items: flex-start;
-      background: #fff;
-      padding: 15px;
-      transition: background 0.3s ease;
-    }
+/* ==========================================================================
+   FUNDO / BACKGROUND
+   ========================================================================== */
 
-    .post:hover {
-      background: #fafafa;
-    }
+/* Canvas de partículas animadas (z-index negativo para ficar atrás do conteúdo) */
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: #f5f1e8;
+  filter: blur(1px);
+}
 
-    .post img {
-      width: 120px;
-      height: 80px;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
+/* Camada de fundo sólida atrás de tudo */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: whitesmoke;
+  z-index: -1;
+}
 
-    .post-content {
-      flex: 1;
-    }
 
-    .post-content h3 {
-      margin: 0 0 5px 0;
-      font-size: 16px;
-      color: blue;
-    }
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
 
-    .post-content p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.4;
-      color: #333;
-    }
+/*
+  header — prioridade: styles.css
+  (backdrop-filter, sticky, z-index e box-shadow mantidos;
+   "background-color: #fff" e "border-bottom" do styles2 descartados)
+*/
+header {
+  margin-bottom: 20px;
+  padding: 15px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
 
-    /* Responsivo */
-    @media (max-width: 600px) {
-      #container {
-        width: 95%;
-        padding: 10px;
-      }
+/*
+  Título principal do header — prioridade: styles.css
+  (font-size 20px e text-align center mantidos;
+   "font-size: 24px" do styles2 descartado)
+*/
+.header-top {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
 
-      .post {
-        flex-direction: column;
-        align-items: center;
-      }
+/* Navegação / links do header */
+.header-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-      .post img {
-        width: 100%;
-        height: auto;
-      }
+/*
+  Links do header — prioridade: styles.css
+  (padding e font-size 16px mantidos;
+   "margin-right: 15px" e "font-size: 17px" do styles2 descartados)
+*/
+.header-links a {
+  font-size: 16px;
+  color: blue;
+  text-decoration: none;
+  padding: 5px 10px;
+}
 
-      .post-content {
-        text-align: center;
-      }
-    }
-  </style>
+.header-links a:hover {
+  opacity: 0.7;
+}
+
+/* Botão de menu mobile (visível apenas em telas pequenas via media query) */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: rgb(197, 87, 39);
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+
+/* ==========================================================================
+   LAYOUT — CONTAINER E COLUNAS
+   ========================================================================== */
+
+/*
+  #container — prioridade: styles.css
+  (backdrop-filter e background-color #f5f1e8 mantidos;
+   "width: 900px", "max-width: 95%" e "padding: 20px" do styles2 descartados)
+*/
+#container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 15px;
+  backdrop-filter: blur(3px);
+  background-color: #f5f1e8;
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Colunas esquerda e direita (mobile: empilhadas) */
+#left,
+#right {
+  width: 100%;
+  float: none;
+}
+
+#right {
+  margin-top: 20px;
+  text-align: center;
+}
+
+
+/* ==========================================================================
+   ANIMAÇÃO DE TEXTO
+   ========================================================================== */
+
+/* Cada letra vira um span para animação individual */
+.animated-text span {
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.animated-text span:hover {
+  transform: scale(1.3) rotate(5deg);
+  color: #ff9800;
+  text-shadow: 0 0 8px rgba(255, 152, 0, 0.7);
+}
+
+
+/* ==========================================================================
+   GALERIA DE IMAGENS
+   ========================================================================== */
+
+/* Título de seção da galeria */
+.gallery-title {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 5px;
+}
+
+/* Grid da galeria — 2 colunas por padrão (mobile) */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  border: 2px solid #f0f0f0;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+/* Link "ver mais" alinhado à direita */
+.see-more {
+  clear: both;
+  font-size: 18px;
+  text-align: right;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+
+/* ==========================================================================
+   SEÇÃO DE ARTIGOS
+   ========================================================================== */
+
+/* Grid de artigos — 1 coluna por padrão (mobile) */
+.articles-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 20px;
+  clear: both;
+}
+
+.article {
+  padding: 14px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  transition: opacity 0.15s ease;
+}
+
+.post-content:hover {
+  opacity: 0.7;
+}
+
+.article h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-weight: normal;
+  color: blue;
+  line-height: 1.3;
+}
+
+.article a {
+  text-decoration: none;
+}
+
+.article p {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+}
+
+
+/* ==========================================================================
+   TIMELINE DE POSTS
+   (exclusivo do styles2 — adicionado integralmente)
+   ========================================================================== */
+
+/* Lista vertical de posts */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Card individual de post */
+.post {
+  text-decoration: none;
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  padding: 15px;
+  transition: background 0.3s ease;
+}
+
+
+
+/* Thumbnail do post */
+.post img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  flex-shrink: 0; /* impede que a imagem encolha com o flex */
+}
+
+/* Texto do post */
+.post-content {
+  flex: 1;
+}
+
+.post-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  color: blue;
+}
+
+.post-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+}
+
+
+/* ==========================================================================
+   MODAL DE IMAGEM
+   ========================================================================== */
+
+/* Overlay do modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Caixa de conteúdo do modal */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background: rgba(20, 20, 20, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 15px;
+  max-width: 95%;
+  max-height: 85%;
+  animation: zoomIn 0.5s ease;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+/* Texto informativo abaixo da imagem */
+.modal-info {
+  margin-top: 15px;
+  color: #e0e0e0;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Botão de fechar (×) */
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 24px;
+  color: #FFFFF0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  z-index: 25;
+}
+
+/* Setas de navegação do modal */
+.modal-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  user-select: none;
+  transition: background 0.3s ease;
+  z-index: 20;
+}
+
+.modal-arrow:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-arrow.left  { left: 5px; }
+.modal-arrow.right { right: 5px; }
+
+
+/* ==========================================================================
+   ANIMAÇÕES (@keyframes)
+   ========================================================================== */
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+
+/* ==========================================================================
+   RESPONSIVIDADE — MEDIA QUERIES
+   ========================================================================== */
+
+/* --- Mobile pequeno: até 480px (styles.css) --- */
+@media (max-width: 480px) {
+  /* Galeria em coluna única */
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  /* Links do header empilhados verticalmente */
+  .header-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Setas do modal menores */
+  .modal-arrow {
+    font-size: 24px;
+    padding: 6px 10px;
+  }
+}
+
+/* --- Mobile: até 600px (styles2.css — exclusivo da timeline) --- */
+@media (max-width: 600px) {
+  /* Posts empilhados verticalmente e centralizados */
+  .post {
+    flex-direction: column;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  transition: opacity 0.15s ease;
+  }
+
+  /* Imagem ocupa toda a largura disponível */
+  .post img {
+    width: 100%;
+    height: auto;
+  }
+
+  .post-content {
+    text-align: center;
+  }
+
+  .post:hover {
+  opacity: 0.7;
+}
+}
+
+/* --- Tablet: 768px e acima (styles.css) --- */
+@media (min-width: 768px) {
+  #container {
+    padding: 20px;
+  }
+
+  header {
+    padding: 20px;
+  }
+
+  /* Título alinhado à esquerda em telas maiores */
+  .header-top {
+    font-size: 24px;
+    text-align: left;
+  }
+
+  .header-links {
+    justify-content: flex-start;
+  }
+
+  /* Galeria passa para 3 colunas */
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Artigos em 3 colunas */
+  .articles-section {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Modal em linha (imagem + info lado a lado) */
+  .modal-content {
+    flex-direction: row;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .modal-content img {
+    max-width: 60vw;
+    max-height: 80vh;
+  }
+
+  .modal-info {
+    margin-left: 20px;
+    margin-top: 0;
+    text-align: left;
+    max-width: 30vw;
+  }
+}
+
+/* --- Desktop: 992px e acima (styles.css) --- */
+@media (min-width: 992px) {
+  /* Layout de duas colunas flutuantes */
+  #left {
+    width: 55%;
+    float: left;
+    font-size: 17px;
+  }
+
+  #right {
+    width: 40%;
+    float: right;
+    margin-top: 0;
+  }
+}
+</style>
+
 </head>
+  <canvas id="particleCanvas"></canvas>
 
 <body>
   <header>
@@ -161,193 +617,112 @@
         </div>
       </a>
 
-      <a href="LINKLINKLINK">
+      <a href="/portfolio/textos/materias/por_uma_sociedade_sem_manicomios/index.html">
         <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/10/CULT_323_IMAGENS_SITE_2.jpg" alt="">
           <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
+            <h3>“Fui salva pela escrita e pela guarda da memória”</h3>
+            <p>Uma das autoras africanas de maior destaque fala sobre a memória do genocídio de Ruanda e sua literatura</p>
           </div>
         </div>
       </a>
 
-      <a href="LINKLINKLINK">
+      <a href="/portfolio/textos/materias/deus_e_o_diabo/index.html">
         <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/04/CULT_329_IMAGENS_SITE_13.jpg" alt="">
           <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
+            <h3>Deus e o Diabo no Grande sertão</h3>
+            <p>Guimarães Rosa renasce pela ótica de duas biografias</p>
           </div>
         </div>
       </a>
 
-      <a href="LINKLINKLINK">
+      <a href="/portfolio/textos/materias/shrink/index.html">
         <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/02/20_02_2026_CARROSSEL_Shrink_SITE.jpg" alt="">
           <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
+            <h3>Para que, afinal, serve o shrink? </h3>
+            <p>Reportagem sobre a relutância do mercado editorial em abandonar o plástico</p>
           </div>
         </div>
       </a>
 
-      <a href="LINKLINKLINK">
+      <a href="/portfolio/textos/materias/irene_vida_gala/index.html">
         <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/10/CULT_323_IMAGENS_SITE_3.jpg" alt="">
           <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
+            <h3>“Historicamente, a diplomacia servia aos interesses das elites. Cabe a nós, diplomatas, desconstruir essa noção”</h3>
+            <p>Diplomata Irene Vida Gala questiona lobby masculino em postos de poder</p>
           </div>
         </div>
       </a>
 
-      <a href="LINKLINKLINK">
+            <a href="/portfolio/textos/materias/grandesertao_doispontos/index.html">
         <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/04/CULT_329_IMAGENS_SITE_12.jpg" alt="">
           <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
+            <h3> Grandes sertões – dois pontos! – travessias</h3>
+            <p>O alemão Berthold Zilly e a australiana Alison Entrekin estão a poucos passos de concluir longas travessias: serão publicadas, enfim, suas versões de um dos nossos romances mais inventivos e consagrados: “Grande sertão: veredas”, de João Guimarães Rosa</p>
           </div>
         </div>
       </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="LINKLINKLINK">
-        <div class="post">
-          <img src="IMAGEMIMAGEMIMAGEM" alt="">
-          <div class="post-content">
-            <h3>TÍTULOTÍTULOTÍTULO</h3>
-            <p>LINHAFINALINHAFINALINHAFINALINHAFINA</p>
-          </div>
-        </div>
-      </a>
-
-
+      
       <a href="/portfolio/textos/materias/Onde_esta_o_acervo_de_Haroldo_de_Campos/index.html">
         <div class="post">
           <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/02/IMG-20250208-WA0005.jpg" alt="">
           <div class="post-content">
             <h3>Onde está o acervo de Haroldo de Campos?</h3>
             <p>21 mil itens bibliográficos adquiridos e anotados pelo poeta doados pela sua família ao estado de São Paulo vão para um storage em Barueri</p>
+          </div>
+        </div>
+      </a>
+      <a href="/portfolio/textos/materias/A_arte_e_o_pior_forum/index.html">
+  <div class="post"><img
+      src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/05/CULT_318_IMAGENS_SITE.jpg">
+    <div class="post-content">
+      <h3>“A arte é o pior fórum para um problema social”</h3>
+      <p>editor que transformou o mercado editorial, Charles Cosac fala sobre seus planos para a nova editora e expressa sua insatisfação com a cultura contemporânea</p>
+    </div>  
+  </div>  
+</a>  
+
+      <a href="/portfolio/textos/materias/A_obra_de_Frantz_Fanon/index.html">
+        <div class="post"><img
+            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/06/CULT_319_IMAGENS_SITE_10.jpg">
+          <div class="post-content">
+            <h3>A obra de Frantz Fanon no mercado editorial brasileiro</h3>
+            <p>Movimentando correntes intelectuais diversas dentro e fora do país, pensamento fanoniano vive momento de efervescência</p>
+          </div>  
+        </div>  
+      </a>  
+
+      
+            <a href="/portfolio/textos/materias/coisas_que_nao_sao_surreais_mas_metafisicas/index.html">
+              <div class="post"><img
+                  src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/03/CULT_316_IMAGENS_SITE_.jpg">
+                <div class="post-content">
+                  <h3>“O palco nos concede espaço para coisas que não são surreais, mas metafísicas”</h3>
+                  <p>Aos 70 anos, Gerald Thomas reflete sobre política, arte e sua trajetória na renovação do teatro brasileiro</p>
+                </div>  
+              </div>  
+            </a>  
+      
+      <a href="/portfolio/textos/materias/O_mau_selvagem_de_Oswald/index.html">
+        <div class="post"><img
+            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/01/28_01_2025_CARROSSEL_Lira-Neto_SITE.jpg">
+          <div class="post-content">
+            <h3>O mau selvagem de Oswald</h3>
+            <p>“É ‘Oswáld’ que se pronuncia”, com a segunda sílaba acentuada, como defendeu Antonio Candido</p>
+          </div>
+        </div>
+      </a>
+      
+      <a href="/portfolio/textos/materias/fazer_teatro_e_uma_alegria_dificil/index.html">
+        <div class="post"><img
+            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/01/15_01_2025_CARD_Maria-Fernanda-Candido_SITE.jpg">
+          <div class="post-content">
+            <h3>Maria Fernanda Cândido: “fazer teatro é uma alegria difícil, mas chama-se alegria”</h3>
+            <p>Em entrevista à Cult, Maria Fernanda Cândido comenta sua carreira no cinema e no teatro e faz um balanço de sua relação com a língua portuguesa e Clarice Lispector</p>
           </div>
         </div>
       </a>
@@ -365,51 +740,6 @@
         </div>
       </a>
 
-      <a href="/portfolio/textos/materias/O_mau_selvagem_de_Oswald/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/01/28_01_2025_CARROSSEL_Lira-Neto_SITE.jpg">
-          <div class="post-content">
-            <h3>O mau selvagem de Oswald</h3>
-            <p>“É ‘Oswáld’ que se pronuncia”, com a segunda sílaba acentuada, como defendeu Antonio Candido</p>
-          </div>
-        </div>
-      </a>
-
-      <a href="/portfolio/textos/materias/fazer_teatro_e_uma_alegria_dificil/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/01/15_01_2025_CARD_Maria-Fernanda-Candido_SITE.jpg">
-          <div class="post-content">
-            <h3>Maria Fernanda Cândido: “fazer teatro é uma alegria difícil, mas chama-se alegria”</h3>
-            <p>Em entrevista à Cult, Maria Fernanda Cândido comenta sua carreira no cinema e no teatro e faz um balanço de sua relação com a língua portuguesa e Clarice Lispector</p>
-          </div>
-        </div>
-      </a>
-
-
-      <a href="/portfolio/textos/materias/A_obra_de_Frantz_Fanon/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/06/CULT_319_IMAGENS_SITE_10.jpg">
-          <div class="post-content">
-            <h3>A obra de Frantz Fanon no mercado editorial brasileiro</h3>
-            <p>Movimentando correntes intelectuais diversas dentro e fora do país, pensamento fanoniano vive momento de efervescência</p>
-          </div>  
-        </div>  
-      </a>  
-
-            <a href="/portfolio/textos/materias/A_arte_e_o_pior_forum/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/05/CULT_318_IMAGENS_SITE.jpg">
-          <div class="post-content">
-            <h3>“A arte é o pior fórum para um problema social”</h3>
-            <p>editor que transformou o mercado editorial, Charles Cosac fala sobre seus planos para a nova editora e expressa sua insatisfação com a cultura contemporânea</p>
-          </div>  
-        </div>  
-      </a>  
-
-
-      
-
-      
 
 
       <a href="/portfolio/textos/materias/Atef_Abu_Saif/index.html">
@@ -423,6 +753,91 @@
       </a>
 
 
+      
+
+
+      <a href="/portfolio/textos/materias/kaue/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/04/10_04_2026_POST_Parcelado_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>Política do endividamento: precariedade e a modernidade</h3>
+            <p>Kauê Lopes dos Santos analisa o endividamento como elemento estruturante da dinâmica de consumo na sociedade brasileira</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/portfolio/textos/materias/evandro/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/03/24_03_2025_CARROSSEL_LIVRO_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>Evandro Affonso Ferreira: Salto triplo sem rede</h3>
+            <p>Perfil do premiado escritor Evandro Affonso Ferreira</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/portfolio/textos/materias/sebastiao_nunes/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/01/19_01_2025_CARROSSEL_Sebastiao-Nunes_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>Sebastião Nunes: “Cada um por si e a arte experimental por todos”</h3>
+            <p>Em entrevista à Cult, Sebastião Nunes comenta a expectativa de ser lido em um mundo no qual “a humanidade não tem futuro” e “a velhice do poeta marginal”</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/portfolio/textos/materias/andre/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/04/Andre%CC%81-Santa-Rosa-scaled.jpg" alt="">
+          <div class="post-content">
+            <h3>André Santa Rosa: Poesia entre passado e presente</h3>
+            <p>Ao utilizar experimentalismos formais e miradas políticas sobre a história, <i>Praia esgarçada alegria</i> conduz o leitor por um campo multidisciplinar e muito frutífero da poesia contemporânea</p>
+          </div>
+        </div>
+      </a>
+
+
+      <a href="/portfolio/textos/materias/beatrice/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/01/CULT_326_IMAGENS_SITE_11.jpg" alt="">
+          <div class="post-content">
+            <h3>Beatrice Monti della Corte: “deixei de lado a ideia de que o futuro pode ser muito pequeno”</h3>
+            <p>prestes a completar 100 anos, a baronesa italiana fala sobre a Santa Maddalena Foundation – residência de escritores na toscana – e seus pontos de vista sobre arte e literatura</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/portfolio/textos/materias/gabe_klinger/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/02/13_02_2026_CARROSSEL_Gabe-Klinger_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>Gabe Klinger: Vinhos, cinema e a cidade</h3>
+            <p>O cineasta Gabe Klinger fala sobre a estreia em Berlim de seu filme <i>Isabel</i></p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/portfolio/textos/materias/bob_wolfenson/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/09/CULT_322_IMAGENS_SITE17.jpg" alt="">
+          <div class="post-content">
+            <h3>Do lado de fora da caixa preta</h3>
+            <p>Resenha do fotolivro <i>Interiores</i>, de Bob Wolfenson</p>
+          </div>
+        </div>
+      </a>
+
+            <a href="/portfolio/textos/materias/Stefania_Bril_e_o_mundo_repleto_de_imagens/index.html">
+        <div class="post"><img
+            src="https://revistacult.uol.com.br/home/wp-content/uploads/2024/09/19_09_2024_CARROSSEL_Stefana_SITE6.jpg">
+          <div class="post-content">
+            <h3>Stefania Bril e o mundo repleto de imagens</h3>
+            <p>A fotógrafa entendia que vivemos em um mundo repleto de imagens e que precisamos ter ferramentas para interpretá-las</p>
+          </div>  
+        </div>  
+      </a>  
+
+
       <a href="/portfolio/textos/materias/O_cinema_do_acaso_no_coracao_do_desmatamento/index.html">
         <div class="post"><img
             src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/07/22_07_2025_CARROSSEL_Iracema_SITE.jpg">
@@ -433,16 +848,81 @@
         </div>
       </a>
       
-      <a href="/portfolio/textos/materias/coisas_que_nao_sao_surreais_mas_metafisicas/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/03/CULT_316_IMAGENS_SITE_.jpg">
+      <a href="/portfolio/textos/materias/brasil_nunca_mais/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/12/17_12_2025_CARROSSEL_Camilo-Vanucchi_SITE.jpg" alt="">
           <div class="post-content">
-            <h3>“O palco nos concede espaço para coisas que não são surreais, mas metafísicas”</h3>
-            <p>Aos 70 anos, Gerald Thomas reflete sobre política, arte e sua trajetória na renovação do teatro brasileiro</p>
+            <h3>Brasil: Nunca mais, 40 anos depois</h3>
+            <p>Entrevista com Camilo Vannuchi, autor de <i>Nunca Mais – Os Bastidores da Maior Denúncia Contra a Tortura já Feita no Brasil</i></p>
+          </div>
+        </div>
+      </a>
+
+            <a href="/portfolio/textos/materias/Poema_sobre_o_desastre_de_Lisboa/index.html">
+        <div class="post"><img
+            src="https://revistacult.uol.com.br/home/wp-content/uploads/2024/11/20_11_2024_Voltaire_SITE.jpg">
+          <div class="post-content">
+            <h3>Poema sobre o desastre de Lisboa</h3>
+            <p>Poema de Voltaire traduzido para o português na ocasião dos 350 anos do autor</p>
+          </div>    
+        </div>    
+      </a>    
+
+
+
+
+
+      <a href="/portfolio/textos/resenhas/Cem_vezes_Abdias_Nascimento/index.html">
+        <div class="post"><img
+            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/05/CULT_318_IMAGENS_SITE20-1024x448.jpg">
+          <div class="post-content">
+            <h3>Cem vezes Abdias Nascimento</h3>
+            <p>Resenha do livro <i>Abdias, intérprete do Brasil</i>, organizado por Tulio Custódio</p>
           </div>  
         </div>  
       </a>  
+
+
+
+
+
+
+
+      <a href="LINKLINKLINK">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/04/02_04_2026_CARROSSEL_Walter-Hugo-Khouri_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>“Filosófico, existencial, metafísico”: o horror de Walter Hugo Khouri</h3>
+            <p>Sobre o lançamento de <i>O horror em Walter Hugo Khouri</i>, de Donny Correia</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="/portfolio/textos/materias/walter_hugo_khouri/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/12/15_12_2025_CARROSSEL_Fabiane-Secches_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>Fabiane Secches: “O livro vai fazendo suas próprias curvas”</h3>
+            <p>Errâncias e travessias de Fabiane Secches em <i>Ilhas suspensas</i></p>
+          </div>
+        </div>
+      </a>
+
+
       
+      <a href="/portfolio/textos/materias/leonilson/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2026/01/22_01_2025_CARROSSEL_Leonilson_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>A viva voz de Leonilson</h3>
+            <p>Trinta e dois anos após sua morte, livro reúne transcrições de diários sonoros de Leonilson</p>
+          </div>
+        </div>
+      </a>
+
+
+      
+
       
       <a href="/portfolio/textos/materias/A_literatura_migrante_segundo_Leonora_Miano/index.html">
         <div class="post"><img
@@ -464,6 +944,17 @@
           </div>
         </div>
       </a>
+
+                  <a href="/portfolio/textos/materias/greb/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/09/CULT_322_IMAGENS_SITE18.jpg" alt="">
+          <div class="post-content">
+            <h3>Dissonância renovadora</h3>
+            <p>É surpreendente que a tradição literária brasileira tenha tomado contato com a obra de Quin mais de 50 anos após a sua trágica morte</p>
+          </div>
+        </div>
+      </a>
+
 
 
  
@@ -492,15 +983,7 @@
         </div>          
       </a>          
       
-      <a href="/portfolio/textos/materias/Stefania_Bril_e_o_mundo_repleto_de_imagens/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2024/09/19_09_2024_CARROSSEL_Stefana_SITE6.jpg">
-          <div class="post-content">
-            <h3>Stefania Bril e o mundo repleto de imagens</h3>
-            <p>A fotógrafa entendia que vivemos em um mundo repleto de imagens e que precisamos ter ferramentas para interpretá-las</p>
-          </div>  
-        </div>  
-      </a>  
+
       
             <a href="/portfolio/textos/materias/Para_desalienar_o_corpo_idoso_do_cinema/index.html">
       <div class="post"><img
@@ -639,6 +1122,16 @@
               </div>
             </a>
 
+                  <a href="/portfolio/textos/materias/vera_egito/index.html">
+        <div class="post">
+          <img src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/12/10_12_2025_CARROSSEL_Tremembe%CC%81_SITE.jpg" alt="">
+          <div class="post-content">
+            <h3>“É o desvio que atrai”</h3>
+            <p>Tremembé, por Vera Egito</p>
+          </div>
+        </div>
+      </a>
+
 
 
       <a href="/portfolio/textos/materias/Corpos_velhos_Para_que_servem/index.html">
@@ -674,29 +1167,6 @@
       </a>    
 
 
-      <a href="/portfolio/textos/materias/Poema_sobre_o_desastre_de_Lisboa/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2024/11/20_11_2024_Voltaire_SITE.jpg">
-          <div class="post-content">
-            <h3>Poema sobre o desastre de Lisboa</h3>
-            <p>Poema de Voltaire traduzido para o português na ocasião dos 350 anos do autor</p>
-          </div>    
-        </div>    
-      </a>    
-
-
-
-
-
-      <a href="/portfolio/textos/resenhas/Cem_vezes_Abdias_Nascimento/index.html">
-        <div class="post"><img
-            src="https://revistacult.uol.com.br/home/wp-content/uploads/2025/05/CULT_318_IMAGENS_SITE20-1024x448.jpg">
-          <div class="post-content">
-            <h3>Cem vezes Abdias Nascimento</h3>
-            <p>Resenha do livro <i>Abdias, intérprete do Brasil</i>, organizado por Tulio Custódio</p>
-          </div>  
-        </div>  
-      </a>  
 
 
       <a href="/portfolio/textos/materias/Entre_silencio_palavra_e_delirio/index.html">

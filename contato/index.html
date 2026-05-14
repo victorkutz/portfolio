@@ -5,79 +5,567 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contato - Portfólio</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 15px;
-      color: rgb(197, 87, 39);
-      background-color: white;
-    }
 
-    #container {
-      width: 600px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      text-align: left;
-      backdrop-filter: blur(3px);
-      background-color: rgb(255, 253, 251);
-      -webkit-backdrop-filter: blur(6px);
-      margin-top: 40px;
-    }
+<style>
+/* ==========================================================================
+   RESET E BASE
+   ========================================================================== */
 
-    header {
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      backdrop-filter: blur(3px);
-      background-color: rgb(255, 255, 255);
-      -webkit-backdrop-filter: blur(6px);
-      padding: 20px;
-    }
+/* Reset universal de box model */
+* {
+  box-sizing: border-box;
+}
 
-    .header-top {
-      font-size: 24px;
-    }
+/*
+  corpo — prioridade: styles.css
+  (color #111111, background preto, position relative mantidos;
+   "color: black" e "background: white" do styles2 descartados)
+*/
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #111111;
+  background-color: rgb(0, 0, 0);
+  position: relative;
+}
 
-    .header-links a {
-      margin-right: 15px;
-      font-size: 17px;
-      color: blue;
-      text-decoration: none;
-    }
+/* Negrito com cor de destaque */
+b {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #c55727;
+  position: relative;
+}
 
-    .header-links a:hover {
-      opacity: 0.7;
-    }
+/*
+  Links — prioridade: styles.css
+  ("text-decoration: underline" do styles2 descartado)
+*/
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: blue;
+}
 
-    a:link,
-    a:visited,
-    a:hover,
-    a:active {
-      color: blue;
-      text-decoration: underline;
-    }
 
-    .contact-info {
-      font-size: 18px;
-      line-height: 2;
-    }
+/* ==========================================================================
+   FUNDO / BACKGROUND
+   ========================================================================== */
 
-    .contact-info p {
-      margin: 15px 0;
-    }
+/* Canvas de partículas animadas (z-index negativo para ficar atrás do conteúdo) */
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: #f5f1e8;
+  filter: blur(1px);
+}
 
-    .contact-info a {
-      color: rgb(197, 87, 39);
-      text-decoration: none;
-      font-weight: bold;
-    }
+/* Camada de fundo sólida atrás de tudo */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: whitesmoke;
+  z-index: -1;
+}
 
-    .contact-info a:hover {
-      text-decoration: underline;
-    }
-  </style>
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+/*
+  header — prioridade: styles.css
+  (backdrop-filter, sticky, z-index e box-shadow mantidos;
+   "background-color: #fff" e "border-bottom" do styles2 descartados)
+*/
+header {
+  margin-bottom: 20px;
+  padding: 15px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+/*
+  Título principal do header — prioridade: styles.css
+  (font-size 20px e text-align center mantidos;
+   "font-size: 24px" do styles2 descartado)
+*/
+.header-top {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Navegação / links do header */
+.header-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/*
+  Links do header — prioridade: styles.css
+  (padding e font-size 16px mantidos;
+   "margin-right: 15px" e "font-size: 17px" do styles2 descartados)
+*/
+.header-links a {
+  font-size: 16px;
+  color: blue;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+
+.header-links a:hover {
+  opacity: 0.7;
+}
+
+/* Botão de menu mobile (visível apenas em telas pequenas via media query) */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: rgb(197, 87, 39);
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+
+/* ==========================================================================
+   LAYOUT — CONTAINER E COLUNAS
+   ========================================================================== */
+
+/*
+  #container — prioridade: styles.css
+  (backdrop-filter e background-color #f5f1e8 mantidos;
+   "width: 900px", "max-width: 95%" e "padding: 20px" do styles2 descartados)
+*/
+#container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 15px;
+  backdrop-filter: blur(3px);
+  background-color: #f5f1e8;
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Colunas esquerda e direita (mobile: empilhadas) */
+#left,
+#right {
+  width: 100%;
+  float: none;
+}
+
+#right {
+  margin-top: 20px;
+  text-align: center;
+}
+
+
+/* ==========================================================================
+   ANIMAÇÃO DE TEXTO
+   ========================================================================== */
+
+/* Cada letra vira um span para animação individual */
+.animated-text span {
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.animated-text span:hover {
+  transform: scale(1.3) rotate(5deg);
+  color: #ff9800;
+  text-shadow: 0 0 8px rgba(255, 152, 0, 0.7);
+}
+
+
+/* ==========================================================================
+   GALERIA DE IMAGENS
+   ========================================================================== */
+
+/* Título de seção da galeria */
+.gallery-title {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 5px;
+}
+
+/* Grid da galeria — 2 colunas por padrão (mobile) */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  border: 2px solid #f0f0f0;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+}
+
+/* Link "ver mais" alinhado à direita */
+.see-more {
+  clear: both;
+  font-size: 18px;
+  text-align: right;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+
+/* ==========================================================================
+   SEÇÃO DE ARTIGOS
+   ========================================================================== */
+
+/* Grid de artigos — 1 coluna por padrão (mobile) */
+.articles-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-top: 20px;
+  clear: both;
+}
+
+.article {
+  padding: 14px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  transition: opacity 0.15s ease;
+}
+
+
+.article h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-weight: normal;
+  color: blue;
+  line-height: 1.3;
+}
+
+.article a {
+  text-decoration: none;
+}
+
+.article p {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+}
+
+
+/* ==========================================================================
+   TIMELINE DE POSTS
+   (exclusivo do styles2 — adicionado integralmente)
+   ========================================================================== */
+
+/* Lista vertical de posts */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+/* Card individual de post */
+.post {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  background: #fff;
+  padding: 15px;
+  transition: background 0.3s ease;
+}
+
+
+
+/* Thumbnail do post */
+.post img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  flex-shrink: 0; /* impede que a imagem encolha com o flex */
+}
+
+/* Texto do post */
+.post-content {
+  flex: 1;
+}
+
+.post-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  color: blue;
+}
+
+.post-content p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #333;
+}
+
+
+/* ==========================================================================
+   MODAL DE IMAGEM
+   ========================================================================== */
+
+/* Overlay do modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* Caixa de conteúdo do modal */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  background: rgba(20, 20, 20, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 15px;
+  max-width: 95%;
+  max-height: 85%;
+  animation: zoomIn 0.5s ease;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+/* Texto informativo abaixo da imagem */
+.modal-info {
+  margin-top: 15px;
+  color: #e0e0e0;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Botão de fechar (×) */
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 24px;
+  color: #FFFFF0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  z-index: 25;
+}
+
+/* Setas de navegação do modal */
+.modal-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  user-select: none;
+  transition: background 0.3s ease;
+  z-index: 20;
+}
+
+.modal-arrow:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-arrow.left  { left: 5px; }
+.modal-arrow.right { right: 5px; }
+
+
+/* ==========================================================================
+   ANIMAÇÕES (@keyframes)
+   ========================================================================== */
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+
+/* ==========================================================================
+   RESPONSIVIDADE — MEDIA QUERIES
+   ========================================================================== */
+
+/* --- Mobile pequeno: até 480px (styles.css) --- */
+@media (max-width: 480px) {
+  /* Galeria em coluna única */
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  /* Links do header empilhados verticalmente */
+  .header-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Setas do modal menores */
+  .modal-arrow {
+    font-size: 24px;
+    padding: 6px 10px;
+  }
+}
+
+/* --- Mobile: até 600px (styles2.css — exclusivo da timeline) --- */
+@media (max-width: 600px) {
+  /* Posts empilhados verticalmente e centralizados */
+  .post {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Imagem ocupa toda a largura disponível */
+  .post img {
+    width: 100%;
+    height: auto;
+  }
+
+  .post-content {
+    text-align: center;
+  }
+}
+
+/* --- Tablet: 768px e acima (styles.css) --- */
+@media (min-width: 768px) {
+  #container {
+    padding: 20px;
+  }
+
+  header {
+    padding: 20px;
+  }
+
+  /* Título alinhado à esquerda em telas maiores */
+  .header-top {
+    font-size: 24px;
+    text-align: left;
+  }
+
+  .header-links {
+    justify-content: flex-start;
+  }
+
+  /* Galeria passa para 3 colunas */
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Artigos em 3 colunas */
+  .articles-section {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Modal em linha (imagem + info lado a lado) */
+  .modal-content {
+    flex-direction: row;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .modal-content img {
+    max-width: 60vw;
+    max-height: 80vh;
+  }
+
+  .modal-info {
+    margin-left: 20px;
+    margin-top: 0;
+    text-align: left;
+    max-width: 30vw;
+  }
+}
+
+/* --- Desktop: 992px e acima (styles.css) --- */
+@media (min-width: 992px) {
+  /* Layout de duas colunas flutuantes */
+  #left {
+    width: 55%;
+    float: left;
+    font-size: 17px;
+  }
+
+  #right {
+    width: 40%;
+    float: right;
+    margin-top: 0;
+  }
+}
+
+</style>
+
 </head>
+  <canvas id="particleCanvas"></canvas>
 
 <body>
   <header>
