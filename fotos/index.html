@@ -32,40 +32,51 @@
       z-index: -1;
     }
 
-    /* Header styles */
-    header {
-      margin-bottom: 20px;
-      padding: 15px;
-      backdrop-filter: blur(3px);
-      background-color: rgb(0, 0, 0);
-      -webkit-backdrop-filter: blur(6px);
-      position: relative;
-    }
+header {
+  margin-bottom: 20px;
+  padding: 15px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
 
-    .header-top {
-      font-size: 20px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
+/*
+  Título principal do header — prioridade: styles.css
+  (font-size 20px e text-align center mantidos;
+   "font-size: 24px" do styles2 descartado)
+*/
+.header-top {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+}
 
-    .header-links {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+/* Navegação / links do header */
+.header-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-    .header-links a {
-      font-size: 16px;
-      color: blue;
-      text-decoration: none;
-      padding: 5px 10px;
-    }
+/*
+  Links do header — prioridade: styles.css
+  (padding e font-size 16px mantidos;
+   "margin-right: 15px" e "font-size: 17px" do styles2 descartados)
+*/
+.header-links a {
+  font-size: 16px;
+  color: blue;
+  text-decoration: none;
+  padding: 5px 10px;
+}
 
-    .header-links a:hover {
-      opacity: 0.7;
-    }
-
+.header-links a:hover {
+  opacity: 0.7;
+}
     a:link,
     a:visited,
     a:hover,
@@ -337,9 +348,9 @@
 <img src="/novasfotos/1.jpg" loading="lazy">
 <img src="/novasfotos/2.jpg" loading="lazy">
 <img src="/novasfotos/3.jpg" loading="lazy">
-<img src="/novasfotos/4.jpg" loading="lazy">
 <img src="/novasfotos/5.jpg" loading="lazy">
 <img src="/novasfotos/6.jpg" loading="lazy">
+<img src="/novasfotos/4.jpg" loading="lazy">
 <img src="/novasfotos/7.jpg" loading="lazy">
 <img src="/novasfotos/8.jpg" loading="lazy">
 <img src="/novasfotos/9.jpg" loading="lazy">
@@ -364,7 +375,7 @@
 <img src="/novasfotos/28.jpg" loading="lazy">
 <img src="/novasfotos/29.jpg" loading="lazy">
 <img src="/novasfotos/30.jpg" loading="lazy">
-<img src="/novasfotos/31.jpg" loading="lazy">
+<img src="/novasfotos/39.jpg" loading="lazy">
 <img src="/novasfotos/32.jpg" loading="lazy">
 <img src="/novasfotos/33.jpg" loading="lazy">
 <img src="/novasfotos/34.jpg" loading="lazy">
@@ -372,7 +383,7 @@
 <img src="/novasfotos/36.jpg" loading="lazy">
 <img src="/novasfotos/37.jpg" loading="lazy">
 <img src="/novasfotos/38.jpg" loading="lazy">
-<img src="/novasfotos/39.jpg" loading="lazy">
+<img src="/novasfotos/40.jpg" loading="lazy">
     </div>
   </div>
 
@@ -427,45 +438,45 @@
     const modalNext = document.getElementById('modal-next');
 
     const photos = [
-'/novasfotos/1.jpg'
-'/novasfotos/2.jpg'
-'/novasfotos/3.jpg'
-'/novasfotos/4.jpg'
-'/novasfotos/5.jpg'
-'/novasfotos/6.jpg'
-'/novasfotos/7.jpg'
-'/novasfotos/8.jpg'
-'/novasfotos/9.jpg'
-'/novasfotos/10.jpg'
-'/novasfotos/11.jpg'
-'/novasfotos/12.jpg'
-'/novasfotos/13.jpg'
-'/novasfotos/14.jpg'
-'/novasfotos/15.jpg'
-'/novasfotos/16.jpg'
-'/novasfotos/17.jpg'
-'/novasfotos/18.jpg'
-'/novasfotos/19.jpg'
-'/novasfotos/20.jpg'
-'/novasfotos/21.jpg'
-'/novasfotos/22.jpg'
-'/novasfotos/23.jpg'
-'/novasfotos/24.jpg'
-'/novasfotos/25.jpg'
-'/novasfotos/26.jpg'
-'/novasfotos/27.jpg'
-'/novasfotos/28.jpg'
-'/novasfotos/29.jpg'
-'/novasfotos/30.jpg'
-'/novasfotos/31.jpg'
-'/novasfotos/32.jpg'
-'/novasfotos/33.jpg'
-'/novasfotos/34.jpg'
-'/novasfotos/35.jpg'
-'/novasfotos/36.jpg'
-'/novasfotos/37.jpg'
-'/novasfotos/38.jpg'
-'/novasfotos/39.jpg'
+'/novasfotos/1.jpg',
+'/novasfotos/2.jpg',
+'/novasfotos/3.jpg',
+'/novasfotos/5.jpg',
+'/novasfotos/6.jpg',
+'/novasfotos/4.jpg',
+'/novasfotos/7.jpg',
+'/novasfotos/8.jpg',
+'/novasfotos/9.jpg',
+'/novasfotos/10.jpg',
+'/novasfotos/11.jpg',
+'/novasfotos/12.jpg',
+'/novasfotos/13.jpg',
+'/novasfotos/14.jpg',
+'/novasfotos/15.jpg',
+'/novasfotos/16.jpg',
+'/novasfotos/17.jpg',
+'/novasfotos/18.jpg',
+'/novasfotos/19.jpg',
+'/novasfotos/20.jpg',
+'/novasfotos/21.jpg',
+'/novasfotos/22.jpg',
+'/novasfotos/23.jpg',
+'/novasfotos/24.jpg',
+'/novasfotos/25.jpg',
+'/novasfotos/26.jpg',
+'/novasfotos/27.jpg',
+'/novasfotos/28.jpg',
+'/novasfotos/29.jpg',
+'/novasfotos/30.jpg',
+'/novasfotos/39.jpg',
+'/novasfotos/32.jpg',
+'/novasfotos/33.jpg',
+'/novasfotos/34.jpg',
+'/novasfotos/35.jpg',
+'/novasfotos/36.jpg',
+'/novasfotos/37.jpg',
+'/novasfotos/38.jpg',
+'/novasfotos/40.jpg'
     ];
 
     let currentIndex = 0;
